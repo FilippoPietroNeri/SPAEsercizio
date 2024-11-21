@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polimi Seminari</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Polimi Seminari</h1>
+
+    <div class="block">
+        <h2>Docenti</h2>
+        <button onclick="fetchData('/api/docenti', 'output-docenti')">Visualizza Docenti</button>
+        <div id="output-docenti" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Seminari</h2>
+        <button onclick="fetchData('/api/seminari', 'output-seminari')">Visualizza Seminari</button>
+        <div id="output-seminari" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Prenotazioni</h2>
+        <button onclick="fetchData('/api/prenotazioni', 'output-prenotazioni')">Visualizza Prenotazioni</button>
+        <div id="output-prenotazioni" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Signup Docente</h2>
+        <form id="form-signup-docente" onsubmit="event.preventDefault(); submitForm('/api/signup', 'form-signup-docente', 'output-signup');">
+            <label for="Nome">Nome:</label>
+            <input type="text" id="Nome" name="Nome" required>
+            <label for="Cognome">Cognome:</label>
+            <input type="text" id="Cognome" name="Cognome" required>
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" required>
+            <label for="Password">Password:</label>
+            <input type="password" id="Password" name="Password" required>
+            <input type="submit" value="Registra Docente">
+        </form>
+        <div id="output-signup" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Inserimento Seminario</h2>
+        <form id="form-inserimento-seminario" onsubmit="event.preventDefault(); submitForm('/api/insert/seminario', 'form-inserimento-seminario', 'output-inserimento');">
+            <label for="Titolo">Titolo:</label>
+            <input type="text" id="Titolo" name="Titolo" required>
+            <label for="Orario">Orario:</label>
+            <input type="datetime-local" id="Orario" name="Orario" required>
+            <label for="AulaID">Aula:</label>
+            <select id="AulaID" name="AulaID" required></select>
+            <label for="DocenteID">Docente:</label>
+            <select id="DocenteID" name="DocenteID" required></select>
+            <input type="submit" value="Inserisci Seminario">
+        </form>
+        <div id="output-inserimento" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Prenotazione Seminario</h2>
+        <form id="form-prenotazione-seminario" onsubmit="event.preventDefault(); submitForm('/api/book', 'form-prenotazione-seminario', 'output-prenotazione');">
+            <label for="SeminarioID">Seminario ID:</label>
+            <input type="number" id="SeminarioID" name="SeminarioID" required>
+            <label for="NumeroStudenti">Numero Studenti:</label>
+            <input type="number" id="NumeroStudenti" name="NumeroStudenti" required>
+            <input type="submit" value="Prenota">
+        </form>
+        <div id="output-prenotazione" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
