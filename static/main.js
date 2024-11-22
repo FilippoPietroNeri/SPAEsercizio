@@ -2,7 +2,30 @@ document.addEventListener('DOMContentLoaded', () => {
     populateDropdown('/api/aule', 'AulaID');
     populateDropdown('/api/docenti', 'DocenteID');
     populateDropdown('/api/seminari', 'SeminariID');
+    updateUI();
 });
+
+function isLoggedIn() {
+    return !!localStorage.getItem('token');
+}
+
+function updateUI() {
+    const isLogged = isLoggedIn();
+
+    document.getElementById('form-login-docente').style.display = isLogged ? 'none' : 'block';
+    document.getElementById('logout-button').style.display = isLogged ? 'inline-block' : 'none';
+
+    const prenotazioneSection = document.getElementById('seminario-prenotazione-section');
+    const protectedMessage = document.getElementById('protected-message');
+
+    if (isLogged) {
+        prenotazioneSection.classList.remove('hidden');
+        protectedMessage.style.display = 'none';
+    } else {
+        prenotazioneSection.classList.add('hidden');
+        protectedMessage.style.display = 'block';
+    }
+}
 
 function getDataToShow(select)
 {
@@ -112,4 +135,29 @@ async function submitForm(endpoint, formId, outputId) {
         documentEl.textContent = `Error: ${error.message}`;
         documentEl.style.color = 'red'
     }
+}
+
+function handleLogin() {
+    const formData = new FormData(document.getElementById('form-login-docente'));
+    fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.success) {
+                localStorage.setItem('token', data.token);
+                updateUI();
+                document.getElementById('output-login').textContent = 'Login riuscito!';
+            } else {
+                document.getElementById('output-login').textContent = 'Errore: ' + data.message;
+            }
+        });
+}
+
+function handleLogout() {
+    localStorage.removeItem('token');
+    updateUI();
 }

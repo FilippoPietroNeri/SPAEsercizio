@@ -59,8 +59,9 @@
         <div id="output-inserimento" class="output">Risultati verranno mostrati qui...</div>
     </div>
 
-    <div class="block">
+    <div class="block" id="seminario-prenotazione-section">
         <h2>Prenotazione Seminario</h2>
+        <p id="protected-message" class="protected-message" style="display: none;">Protected: Accessibile solo se loggato.</p>
         <form id="form-prenotazione-seminario" onsubmit="event.preventDefault(); submitForm('/api/book', 'form-prenotazione-seminario', 'output-prenotazione');">
             <label for="SeminariID">Seminario ID:</label>
             <select id="SeminariID" name="SeminariID" required></select>
@@ -70,10 +71,11 @@
         </form>
         <div id="output-prenotazione" class="output">Risultati verranno mostrati qui...</div>
     </div>
+    
 
     <div class="block">
         <h2>Login Docente</h2>
-        <form id="form-login-docente" onsubmit="event.preventDefault(); submitForm('/api/login', 'form-login-docente', 'output-login');">
+        <form id="form-login-docente" onsubmit="event.preventDefault(); handleLogin();">
             <label for="Email">Email:</label>
             <input type="email" id="Email" name="Email" required>
             <label for="Password">Password:</label>
@@ -81,7 +83,9 @@
             <input type="submit" value="Login">
         </form>
         <div id="output-login" class="output">Risultati verranno mostrati qui...</div>
+        <button id="logout-button" style="display: none;" onclick="handleLogout()">Logout</button>
     </div>
+    
 
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>

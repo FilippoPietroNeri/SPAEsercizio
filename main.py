@@ -1,3 +1,4 @@
+import jwt
 from flask import Flask, render_template, request, jsonify, session
 from utils.db import create_connection
 
@@ -32,9 +33,14 @@ def login():
         if not user:
             return jsonify({ 'error': 'User does not exist'}), 400
 
+        token = jwt.encode(
+            payload=user,
+            key=app.secret_key
+        )
+
         if user['Email'] == userEmail and user['Password'] == userPassword:
             session['logged_in'] = user['ID']
-            return jsonify({ 'message': 'User logged in!' }), 200
+            return jsonify({ 'message': 'User logged in!', 'success': True, 'token': token }), 200
         else:
             return jsonify({ 'error': 'Wrong email or password!'}), 400
 
