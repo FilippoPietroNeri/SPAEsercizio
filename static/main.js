@@ -1,7 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
     populateDropdown('/api/aule', 'AulaID');
     populateDropdown('/api/docenti', 'DocenteID');
+    populateDropdown('/api/seminari', 'SeminariID');
 });
+
+function getDataToShow(select)
+{
+    let data;
+    switch (select) {
+        case 'DocenteID':
+            data = 'Email'
+            break;
+
+        case 'SeminariID':
+            data = 'Titolo'
+            break;
+
+        default:
+            data = 'ID'
+            break;
+    }
+    return data
+}
 
 async function populateDropdown(endpoint, selectId) {
     try {
@@ -9,7 +29,7 @@ async function populateDropdown(endpoint, selectId) {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
         const select = document.getElementById(selectId);
-        select.innerHTML = data.map(item => `<option value="${item.ID}">${item.ID}</option>`).join('');
+        select.innerHTML = data.map(item => `<option value="${item.ID}">[${item.ID}] ${item[getDataToShow(selectId)]}</option>`).join('');
     } catch (error) {
         console.error(`Errore nel popolare il menu a tendina: ${error.message}`);
     }
@@ -22,7 +42,7 @@ async function OldfetchData(endpoint, outputId) {
         const data = await response.json();
         document.getElementById(outputId).textContent = JSON.stringify(data, null, 2);
     } catch (error) {
-        document.getElementById(outputId).textContent = `Error: ${error.message}`;
+        document.getElementById(outputId).textContent = `C'è stato un errore durante la fetch!`;
     }
 }
 
@@ -87,8 +107,9 @@ async function submitForm(endpoint, formId, outputId) {
         });
         const result = await response.json();
         documentEl.textContent = JSON.stringify(result, null, 2);
-        documentEl.style.color = response.status == 200 ? 'green' : 'red'
+        documentEl.style.color = response.ok ? 'green' : 'red'
     } catch (error) {
-        document.getElementById(outputId).textContent = `Error: ${error.message}`;
+        documentEl.textContent = `Error: ${error.message}`;
+        documentEl.style.color = 'red'
     }
 }

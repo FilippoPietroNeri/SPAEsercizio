@@ -62,13 +62,25 @@
     <div class="block">
         <h2>Prenotazione Seminario</h2>
         <form id="form-prenotazione-seminario" onsubmit="event.preventDefault(); submitForm('/api/book', 'form-prenotazione-seminario', 'output-prenotazione');">
-            <label for="SeminarioID">Seminario ID:</label>
-            <input type="number" id="SeminarioID" name="SeminarioID" required>
+            <label for="SeminariID">Seminario ID:</label>
+            <select id="SeminariID" name="SeminariID" required></select>
             <label for="NumeroStudenti">Numero Studenti:</label>
             <input type="number" id="NumeroStudenti" name="NumeroStudenti" required>
             <input type="submit" value="Prenota">
         </form>
         <div id="output-prenotazione" class="output">Risultati verranno mostrati qui...</div>
+    </div>
+
+    <div class="block">
+        <h2>Login Docente</h2>
+        <form id="form-login-docente" onsubmit="event.preventDefault(); submitForm('/api/login', 'form-login-docente', 'output-login');">
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" required>
+            <label for="Password">Password:</label>
+            <input type="password" id="Password" name="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <div id="output-login" class="output">Risultati verranno mostrati qui...</div>
     </div>
 
     <script src="{{ url_for('static', filename='main.js') }}"></script>
